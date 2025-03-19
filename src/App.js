@@ -1,25 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import RentalForm from "./components/RentalForm";
+import RentalList from "./components/RentalList";
+import "./styles/styles.css";
 
 function App() {
+  const [rentals, setRentals] = useState([]);
+
+  const addRental = (rental) => {
+    setRentals([...rentals, rental]);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <h1>Alquiler de Mobiliario 🎉</h1>
+      <RentalForm addRental={addRental} />
+      <RentalList rentals={rentals} />
     </div>
   );
 }
 
 export default App;
+
