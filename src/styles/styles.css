@@ -12,18 +12,20 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh; /* Ajusta la altura mínima */
   padding: 20px;
+  overflow: auto; /* Evita que se corte el formulario */
 }
 
 /* Contenedor Principal */
 .container {
   width: 100%;
-  max-width: 420px;
+  max-width: 450px; /* Aumentamos el ancho */
   background: white;
   padding: 25px;
   border-radius: 12px;
   box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
 }
 
 /* Títulos */
@@ -38,17 +40,18 @@ h1, h2 {
 /* Inputs */
 .input-group {
   margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
 }
 
 label {
   font-weight: 500;
-  display: block;
   margin-bottom: 6px;
   font-size: 14px;
   color: #555;
 }
 
-input, select {
+input, select, textarea {
   width: 100%;
   padding: 12px;
   font-size: 15px;
@@ -56,9 +59,10 @@ input, select {
   border-radius: 8px;
   transition: border 0.3s;
   background: #f9f9f9;
+  resize: none; /* Evita que los textarea crezcan demasiado */
 }
 
-input:focus, select:focus {
+input:focus, select:focus, textarea:focus {
   border: 2px solid #007bff;
   outline: none;
   background: #fff;
@@ -115,16 +119,29 @@ button.secondary:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
 }
 
-/* Responsive */
-@media (max-width: 420px) {
+/* Ajustes Responsivos */
+@media (max-width: 480px) {
   .container {
     width: 100%;
+    padding: 20px; /* Más margen en móviles */
+  }
+
+  h1, h2 {
+    font-size: 1.5em;
+  }
+
+  input, select, textarea {
+    font-size: 14px;
+    padding: 10px;
   }
 
   button {
     font-size: 14px;
+    padding: 10px;
   }
 }
+
 
