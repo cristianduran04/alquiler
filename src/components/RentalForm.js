@@ -1,18 +1,20 @@
 import React, { useState } from "react";
+import { db } from "../services/firebase"; // Asegúrate de importar la configuración de Firebase
+import { collection, addDoc } from "firebase/firestore";
 
-const RentalForm = ({ addRental }) => {
+const RentalForm = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [rentalDate, setRentalDate] = useState("");
   const [returnDate, setReturnDate] = useState("");
-  const [items, setItems] = useState([]); // Lista de ítems
-  const [itemName, setItemName] = useState(""); // Campo para ingresar ítem
+  const [items, setItems] = useState([]); 
+  const [itemName, setItemName] = useState(""); 
 
   // Agregar ítems a la lista
   const handleAddItem = () => {
     if (itemName.trim() !== "") {
-      setItems([...items, itemName]); // Agrega el ítem a la lista
-      setItemName(""); // Limpia el campo
+      setItems([...items, itemName]); 
+      setItemName(""); 
     }
   };
 
@@ -21,22 +23,35 @@ const RentalForm = ({ addRental }) => {
     setItems(items.filter((_, i) => i !== index));
   };
 
-  // Guardar el alquiler
-  const handleSubmit = (e) => {
+  // Guardar el alquiler en Firebase
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!name || !phone || !rentalDate || !returnDate || items.length === 0) {
       alert("Todos los campos y al menos un ítem son obligatorios.");
       return;
     }
 
-    addRental({ name, phone, rentalDate, returnDate, items });
+    try {
+      await addDoc(collection(db, "alquileres"), {
+        name,
+        phone,
+        rentalDate,
+        returnDate,
+        items,
+        timestamp: new Date(), // Para ordenamiento en Firestore
+      });
+      alert("✅ Alquiler guardado correctamente en Firestore!");
 
-    // Reiniciar formulario
-    setName("");
-    setPhone("");
-    setRentalDate("");
-    setReturnDate("");
-    setItems([]);
+      // Reiniciar formulario
+      setName("");
+      setPhone("");
+      setRentalDate("");
+      setReturnDate("");
+      setItems([]);
+    } catch (error) {
+      console.error("❌ Error al guardar en Firestore:", error);
+      alert("Error al guardar en Firebase");
+    }
   };
 
   return (
