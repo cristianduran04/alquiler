@@ -6,6 +6,8 @@ import {
   doc,
   updateDoc,
   deleteDoc,
+  orderBy,
+  query,
 } from "firebase/firestore";
 import "../styles/styles.css";
 
@@ -15,7 +17,10 @@ const RentalList = () => {
   const [editData, setEditData] = useState({});
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, "alquileres"), (snapshot) => {
+    const rentalsRef = collection(db, "alquileres");
+    const q = query(rentalsRef, orderBy("timestamp", "desc")); // Ordena por fecha de creación
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
       const rentalData = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
@@ -167,3 +172,4 @@ const RentalList = () => {
 };
 
 export default RentalList;
+
